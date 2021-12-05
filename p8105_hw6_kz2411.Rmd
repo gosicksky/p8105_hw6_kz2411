@@ -12,12 +12,6 @@ library(modelr)
 library(naniar)
 ```
 
-```{r fix random}
-#fix random
-set.seed(1)
-```
-
-
 ## Problem 1
 ```{r load data 1}
 #load data
@@ -74,8 +68,11 @@ ggplot(pred_resid, aes(x = pred, y = resid)) +
 ```
 
 ```{r cross-validated prediction error}
+#fix random
+set.seed(1)
+
 #cross validation split data
-cv_df <- crossv_mc(child_data_clean, n = 50) %>% 
+cv_df <- crossv_mc(child_data_clean, n = 100) %>% 
   mutate(
     train = map(train, as_tibble),
     test = map(test, as_tibble)
@@ -134,6 +131,9 @@ weather_df =
 ```
 
 ```{r bootstrapping}
+#fix random
+set.seed(1)
+
 #bootstrapping
 bootstraps <- weather_df %>%
   modelr::bootstrap(n = 5000)
@@ -174,7 +174,7 @@ r2_distribution <- r2 %>%
   ggplot(aes(x = r.squared)) +
   geom_density() +
   labs(
-    title = "Distribution of R Square",
+    title = "Distribution of r Square",
     x = "r Square",
     y = "Observations"
   )
@@ -194,7 +194,7 @@ log_distribution <- log_beta %>%
 log_distribution
 ```
 
-The distribution of $\hat{r}^2$ is normally skewed. The distribution of $log(\hat\beta_0\hat\beta_1)$ is also normally skewed.
+The distribution of $\hat{r}^2$ is normally distributed. The distribution of $log(\hat\beta_0\hat\beta_1)$ is also normally distributed.
 
 ```{r 95% confidence interval of R^2}
 #95% confidence interval of R^2
@@ -207,7 +207,7 @@ r2_conf <- r2 %>%
 r2_conf %>% knitr::kable(digits = 3)
 ```
 
-The 95% confidence interval of $\hat(r)^2$ is [0.894,0.927]
+The 95% confidence interval of $\hat{r}^2$ is [0.894,0.927]
 
 ```{r 95% confidence interval of log}
 #95% confidence interval of log
